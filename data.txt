@@ -1,0 +1,8 @@
+$Box:Box001|20181231_084034|dsfsddfdsdfs|new
+$Box:Box001|20181231_084038|esfdsfsefds|new
+$Box:Box001|20181231_084044|tttrtrtrttr|new
+$Sphere:Sphere001|20181231_084050|treterere|new
+$Sphere:Sphere001|20181231_084054|gdfdgffdgffdg|new
+$Sphere:Sphere001|20181231_084057|rtreret|new
+$Sphere:Sphere001|20181231_084057|rtreret|deleted
+$Box:Box001|20181231_084044|tttrtrtrttr|deleted
