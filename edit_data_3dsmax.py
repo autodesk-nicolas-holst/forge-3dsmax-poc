@@ -58,18 +58,26 @@ class ForgeWidget(base_type,ui_type):
 		##print t.Get()
 		##o=t.Get()
 		# python
-		o=str(rt.pickObject(message="select an object"))
-		print o
-		# put the object name in e_object
-		
+		o=rt.pickObject(message="select an object")
+		# check if there is a uuid property on the object, if not create it
+		if rt.getUserPropVal(o,"original_name")==None:
+			rt.setUserPropVal(o,"original_name",o.Name)
+			#print rt.getUserPropVal(o,"original_name")
+		if rt.getUserPropVal(o,"uuid")==None:
+			rt.setUserPropVal(o,"uuid",uuid.uuid4().hex)
+			#print rt.getUserPropVal(o,"uuid")
 
+		self.current_object=rt.getUserPropVal(o,"uuid")
+		#print self.current_object
+		
+		# put the object name in e_object
 		# strip off everything before the " @ " bit
+		o=str(o)
 		pos1=string.find(o," @ ")
 		if pos1!=-1:
 			o=o[:pos1]
 
 		self.e_object.setText(o)
-		self.current_object=o
 
 		self.data=[]
 		t1=[]
@@ -94,7 +102,8 @@ class ForgeWidget(base_type,ui_type):
 		
 		for i in t1:
 			l=i.split("|") 
-			if (len(l)==4)and(l[0]==o):
+			# i=only get complete records and ones for the matching uuid
+			if (len(l)==4)and(l[0]==self.current_object):
 				# first get all the records
 				t=[]
 				t.append((l[1]))
