@@ -54,11 +54,7 @@ class ForgeWidget(base_type,ui_type):
 		
 		
 		
-		# 1. log in and get a token
-		self.token=forge_functions.log_in_and_get_a_token(config)
- 
-		# 2. get all 
-		self.files=fdorge_functions.get_all_files(config)
+		config=logic_functions.connect_to_cloud(config)
 		
 		#populate the file list with these names
 		self.files.sort()
