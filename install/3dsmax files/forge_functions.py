@@ -203,9 +203,7 @@ def delete_file(config,files_to_delete):
 			#print t
 			if t.status_code==200:
 				#print "deleted object %s from bucket %s"%(object_name,self.bucket_name)
-				# remove entry from the tablewidget
-				self.t_files.removeRow(i)
-				del self.files[i]
+
 			else:
 				print "failed to delete object %s from bucket %s"%(object_name,self.bucket_name)
 				
