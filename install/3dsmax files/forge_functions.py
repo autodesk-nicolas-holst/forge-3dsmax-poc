@@ -1,5 +1,10 @@
 # file for forge functions
 
+
+import requests # http://requests.readthedocs.org/en/latest/
+import uuid,json,base64,webbrowser
+
+
 # log in and get a token
 def log_in_and_get_a_token(config):
 	scope="data:read data:write data:create data:search bucket:create bucket:read bucket:update bucket:delete viewables:read"
