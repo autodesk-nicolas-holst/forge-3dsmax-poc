@@ -179,7 +179,7 @@ def upload_a_file(config):
 
 			
 			
-def delete_+selected_files(config,files_to_delete):
+def delete_file(config,files_to_delete):
 	# delete the selected file(s)
 
 	h={"Authorization": self.token,"Content-Type": "application/json", "x-ads-region": self.bucket_region}
