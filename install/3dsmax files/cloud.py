@@ -1,10 +1,7 @@
-import os, sys, time,uuid,string
+import os,sys, time,string
 
 from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtWidgets import QTableWidgetItem
-
-import requests # http://requests.readthedocs.org/en/latest/
-import uuid,json,base64,webbrowser
 
 
 # import logic_fucntions which in turn will call forge and dcc functions
