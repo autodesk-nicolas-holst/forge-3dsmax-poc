@@ -17,6 +17,8 @@ def get_cloud_files(config):
 def add_properties(config):
 	return 3dsmax_functions.add_properties(config)
 
+def restore_original_filenames(config):
+	return 3dsmax_functions.restore_original_filenames(config)
 
 def open_file_dcc():
   temp_name="d:/d/forge2018/temp.max"
