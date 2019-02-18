@@ -1,11 +1,17 @@
 # file to contain the logic functions, which in turn can call forge or dcc specific functions
 
+import 3dsmax_functions
+import forge_functions
+
 
 def connect_to_cloud(config):
 	return forge_functions.log_in_and_get_a_token(config)
 
 def get_cloud_files(config):
 	return forge_functions.get_all_files(config)
+
+def add_properties(config):
+	return 3dsmax_functions.add_properties(config)
 
 
 def open_file_dcc():
