@@ -98,41 +98,7 @@ class ForgeWidget(base_type,ui_type):
 		t2=self.e_description.text()
 
 		# upload the file, using the timestamp and description
-		h={"Authorization": self.token,"Content-Type": "application/json", "x-ads-region": self.bucket_region}
-		d={}
-		r=requests.get("https://developer.api.autodesk.com/oss/v2/buckets/%s/details"%(self.bucket_name), headers=h)
-		#print r
-		#print r.json()
- 
-		if "bucketKey" in r.json() and r.json()["bucketKey"]==self.bucket_name:
-			# if we get here we have access to the bucket
-
-			# save the current scene to a temp file
-			##t=MaxPlus.Core.EvalMAXScript("saveMaxFile \"d:/d/forge2018/temp.max\" clearNeedSaveFlag:False useNewFile:False quiet:true")
-			rt.saveMaxFile("d:/d/forge2018/temp.max",clearNeedSaveFlag=False,useNewFile=False,quiet=True)
-	
-			file_to_upload="d:/d/forge2018/temp.max" 
-			# read the file in
-			f=open(file_to_upload,"rb")	
-			d=f.read()
-			f.close()
-
-			# build the object name
-			object_name=t1+t2+".max"
-
-			headers={"Authorization": self.token, "x-ads-region":  self.bucket_region, "Content-Type": "text/plain; charset=UTF-8", "Content-Disposition": file_to_upload, "Content-Length": "%s"%(len(d))}
-			r=requests.put("https://developer.api.autodesk.com/oss/v2/buckets/%s/objects/%s"%(self.bucket_name,object_name), headers=h, data=d)
-
-			if r.status_code==200:
-				#print "uploaded %s to bucket %s"%(file_to_upload,self.bucket_name)
-				# delete the temp file
-				if os.path.exists("d:/d/forge2018/temp.max"):
-					os.unlink("d:/d/forge2018/temp.max")
-			else:
-				print "failed to upload file %s to bucket %s, %s"%(file_to_upload,self.bucket_name,r.status_code)
-
-
-
+		forge_functions.upload_a_file(config,t1,t2)
 		self.files.append((t1,t2+".max","",-1))
 							
 		#populate the file list with these names
