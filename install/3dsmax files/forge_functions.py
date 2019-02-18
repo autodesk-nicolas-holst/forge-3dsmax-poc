@@ -177,3 +177,40 @@ def upload_a_file(config):
 		else:
 			print "failed to upload file %s to bucket %s, %s"%(file_to_upload,self.bucket_name,r.status_code)
 
+			
+			
+def delete_+selected_files(config,files_to_delete):
+	# delete the selected file(s)
+
+	h={"Authorization": self.token,"Content-Type": "application/json", "x-ads-region": self.bucket_region}
+	d={}
+	r=requests.get("https://developer.api.autodesk.com/oss/v2/buckets/%s/details"%(self.bucket_name), headers=h)
+	#print r
+	#print r.json()
+ 
+	if "bucketKey" in r.json() and r.json()["bucketKey"]==self.bucket_name:
+		# if we get here we have access to the bucket
+			
+		# build a list of items to delete
+		todelete=[]
+		for i in self.t_files.selectionModel().selectedRows():
+			todelete.append((i.row()))
+
+		todelete.reverse()
+		for i in todelete:
+			object_name=self.files[i][0]+self.files[i][1]
+
+			t=requests.delete("https://developer.api.autodesk.com/oss/v2/buckets/%s/objects/%s"%(self.bucket_name,object_name), headers=h)
+			#print t
+			if t.status_code==200:
+				#print "deleted object %s from bucket %s"%(object_name,self.bucket_name)
+				# remove entry from the tablewidget
+				self.t_files.removeRow(i)
+				del self.files[i]
+			else:
+				print "failed to delete object %s from bucket %s"%(object_name,self.bucket_name)
+				
+				
+				
+				
+
