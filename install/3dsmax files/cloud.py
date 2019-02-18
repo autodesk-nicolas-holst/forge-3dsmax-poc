@@ -9,6 +9,8 @@ import uuid,json,base64,webbrowser
 
 from pymxs import runtime as rt
 
+# import forge_fucntions
+import forge_functions
 
 sys.path.append("d:/d/forge2018/")
 
