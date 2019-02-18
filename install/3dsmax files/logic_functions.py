@@ -1,5 +1,7 @@
 # file to contain the logic functions, which in turn can call forge or dcc specific functions
 
+# TODO auto-detect if we're running in a dcc or standalone and also set functions pointers based on dcc/standalone
+
 import 3dsmax_functions
 import forge_functions
 
