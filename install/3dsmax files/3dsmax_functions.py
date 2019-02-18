@@ -18,5 +18,5 @@ def add_properties(config):
       # then rename the object so it's uuid+name (checking the this hasn't been done already)
       c.Name=rt.getUserPropVal(c,"original_name")+rt.getUserPropVal(c,"uuid")
       
-def restore_name(config):
+def  restore_original_filenames(config)
   # todo
