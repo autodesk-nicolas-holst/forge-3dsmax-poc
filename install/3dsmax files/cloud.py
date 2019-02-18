@@ -1,16 +1,15 @@
 import os, sys, time,uuid,string
 
-import MaxPlus 
 from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtWidgets import QTableWidgetItem
 
 import requests # http://requests.readthedocs.org/en/latest/
 import uuid,json,base64,webbrowser
 
-from pymxs import runtime as rt
 
 # import logic_fucntions which in turn will call forge and dcc functions
 import logic_functions
+
 
 sys.path.append("d:/d/forge2018/")
 
@@ -31,7 +30,7 @@ class ForgeWidget(base_type,ui_type):
 		base_type.__init__(self)
 		ui_type.__init__(self)
 		self.setupUi(self)
-		MaxPlus.AttachQWidgetToMax(self)
+		logic_functions.store_widget_dcc(self)
 				
 		# set up the table widget
 		self.t_files.setRowCount(0)
