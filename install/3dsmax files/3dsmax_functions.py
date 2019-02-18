@@ -1,5 +1,10 @@
 # file for 3ds Max functions
 
+
+import MaxPlus 
+from pymxs import runtime as rt
+
+
 def add_properties(config):
    # before we upload populate the properties
    # uuid & name
