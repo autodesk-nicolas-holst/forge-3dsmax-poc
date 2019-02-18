@@ -190,14 +190,8 @@ def delete_+selected_files(config,files_to_delete):
  
 	if "bucketKey" in r.json() and r.json()["bucketKey"]==self.bucket_name:
 		# if we get here we have access to the bucket
-			
-		# build a list of items to delete
-		todelete=[]
-		for i in self.t_files.selectionModel().selectedRows():
-			todelete.append((i.row()))
 
-		todelete.reverse()
-		for i in todelete:
+		for i in files_to_delete:
 			object_name=self.files[i][0]+self.files[i][1]
 
 			t=requests.delete("https://developer.api.autodesk.com/oss/v2/buckets/%s/objects/%s"%(self.bucket_name,object_name), headers=h)
