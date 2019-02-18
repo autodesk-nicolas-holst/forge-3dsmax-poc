@@ -19,4 +19,6 @@ def add_properties(config):
       c.Name=rt.getUserPropVal(c,"original_name")+rt.getUserPropVal(c,"uuid")
       
 def  restore_original_filenames(config)
-  # todo
+   # restore the object so it's name again (stripping off the uuid if it's at the beginning of the name)
+	for c in rt.geometry:
+		c.Name=str(rt.getUserPropVal(c,"original_name"))
