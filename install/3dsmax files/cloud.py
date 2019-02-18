@@ -53,12 +53,10 @@ class ForgeWidget(base_type,ui_type):
 		self.b_delete.setEnabled(False)
 		
 		
-		
-		config=logic_functions.connect_to_cloud(config)
-		
-		#populate the file list with these names
+		self.token=logic_functions.connect_to_cloud(config)
+
+		self.files=logic_functions.get_cloud_files(config)
 		self.files.sort()
-		
 		
 		self.t_files.setRowCount(len(self.files))
 		for i in range(len(self.files)):
@@ -78,15 +76,7 @@ class ForgeWidget(base_type,ui_type):
 		
 		
 	def b_upload_clicked(self):
-		# before we upload populate the properties
-		# uuid & name
-		for c in rt.geometry:
-			if rt.getUserPropVal(c,"original_name")==None:
-				rt.setUserPropVal(c,"original_name",c.Name)
-			if rt.getUserPropVal(c,"uuid")==None:
-				rt.setUserPropVal(c,"uuid",uuid.uuid4().hex)
-			# then rename the object so it's uuid+name (checking the this hasn't been done already)
-			c.Name=rt.getUserPropVal(c,"original_name")+rt.getUserPropVal(c,"uuid")
+		logic_functions.add_properties()
 		
 		self.t_files.clearSelection()
 		
