@@ -3,6 +3,8 @@
 import 3dsmax_functions
 import forge_functions
 
+def store_widget_dcc(self):
+	store_widget_3dsmax(self)
 
 def connect_to_cloud(config):
 	return forge_functions.log_in_and_get_a_token(config)
