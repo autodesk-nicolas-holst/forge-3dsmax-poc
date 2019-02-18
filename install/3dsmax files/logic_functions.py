@@ -1,5 +1,13 @@
 # file to contain the logic functions, which in turn can call forge or dcc specific functions
 
+
+def connect_to_cloud(config):
+	return forge_functions.log_in_and_get_a_token(config)
+
+def get_cloud_files(config):
+	return forge_functions.get_all_files(config)
+
+
 def open_file_dcc():
   temp_name="d:/d/forge2018/temp.max"
   # make sure there isn't a temp file
