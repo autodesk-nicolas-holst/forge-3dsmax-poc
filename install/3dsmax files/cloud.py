@@ -121,9 +121,12 @@ class ForgeWidget(base_type,ui_type):
 		for i in todelete:
 			object_name=self.files[i][0]+self.files[i][1]
 			logic_functions.delete_cloud_file(config,object_name)
-			# TODO delete from file list also???
+
+			# remove entry from the tablewidget
+			self.t_files.removeRow(i)
+			del self.files[i]
 			
-		# deselect as we've just deleted the entries
+		# deselect all as we've just deleted the entries
 		self.t_files.clearSelection()
 		
 		self.set_button_status()
