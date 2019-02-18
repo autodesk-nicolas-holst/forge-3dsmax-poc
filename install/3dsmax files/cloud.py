@@ -99,9 +99,7 @@ class ForgeWidget(base_type,ui_type):
 
 		self.e_description.setText("")
 		
-		# restore the object so it's name again (stripping off the uuid if it's at the beginning of the name)
-		for c in rt.geometry:
-			c.Name=str(rt.getUserPropVal(c,"original_name"))
+		logic_functions.restore_original_objectnames(config)
 		
 	def b_delete_clicked(self):
 		# build a list of items to delete
