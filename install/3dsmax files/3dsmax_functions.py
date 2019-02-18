@@ -4,6 +4,8 @@
 import MaxPlus 
 from pymxs import runtime as rt
 
+def store_widget_3dsmax(self):
+   MaxPlus.AttachQWidgetToMax(self)
 
 def add_properties(config):
    # before we upload populate the properties
