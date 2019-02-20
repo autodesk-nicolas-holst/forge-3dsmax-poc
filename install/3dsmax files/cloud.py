@@ -4,25 +4,26 @@ from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtWidgets import QTableWidgetItem
 
 
+# there must be a better way...
+sys.path.append("D:\\d\\_forge_testing\\20190218\\forge-3dsmax-poc-master\\install\\3dsmax files\\")
 # import logic_fucntions which in turn will call forge and dcc functions
 import logic_functions
+# making sure it reads the file again as I'm modifying it all the time...
+reload(logic_functions)
 
-
-sys.path.append("d:/d/forge2018/")
 
 fname = "d:/d/forge2018/qt-cloud_3dsmax.ui"
 ui_type, base_type=MaxPlus.LoadUiType(fname)
 
 
+
+
+
+
 class ForgeWidget(base_type,ui_type):
 	# thinking of removing these and putting them all in config
-	token=""
 	files=[]
-	client_id=""
-	client_secret=""
-	scope=""
-	bucket_name=""
-	bucket_region=""
+	config={}
 	
 	# utility functions
 	def set_button_status(self):
@@ -37,6 +38,10 @@ class ForgeWidget(base_type,ui_type):
 			self.b_web.setEnabled(False)
 	
 	def __init__(self, parent = None):
+		self.config["temp_folder"]="c:/temp/"
+		self.config["temp_dcc_filename"]="temp_open.max"
+
+
 		base_type.__init__(self)
 		ui_type.__init__(self)
 		self.setupUi(self)
@@ -64,10 +69,10 @@ class ForgeWidget(base_type,ui_type):
 		self.b_delete.setEnabled(False)
 		
 		# connect to the cloud service
-		self.token=logic_functions.connect_to_cloud(config)
+		config=logic_functions.connect_to_cloud(self.config)
 
 		# get all the files that are currently stored on the cloud
-		self.files=logic_functions.get_cloud_files(config)
+		self.files=logic_functions.get_cloud_files(self.config)
 		self.files.sort()
 		
 		# populate the files list with these files
@@ -91,7 +96,7 @@ class ForgeWidget(base_type,ui_type):
 		t2=name=self.e_description.text()
 
 		# upload the file, using the timestamp and description
-		forge_functions.upload_a_file(config,timestamp,name)
+		logic_functions.upload_a_file(self.config,timestamp,name)
 		self.files.append((timestamp,name+".max","",-1))
 							
 		#populate the file list with this new name
@@ -105,7 +110,7 @@ class ForgeWidget(base_type,ui_type):
 		self.e_description.setText("")
 		
 		# restore the object names in the dcc
-		logic_functions.restore_original_objectnames(config)
+		logic_functions.restore_original_objectnames()
 		
 		
 	def b_delete_clicked(self):
@@ -120,7 +125,7 @@ class ForgeWidget(base_type,ui_type):
 		# one ny one delete the files from the cloud
 		for i in todelete:
 			object_name=self.files[i][0]+self.files[i][1]
-			logic_functions.delete_cloud_file(config,object_name)
+			logic_functions.delete_cloud_file(self.config,object_name)
 
 			# remove entry from the tablewidget
 			self.t_files.removeRow(i)
@@ -136,7 +141,17 @@ class ForgeWidget(base_type,ui_type):
 
 
 	def b_open_clicked(self):
-		logic_functions.open_file_dcc()
+		# find which file is selected
+		t=""
+		for i in self.t_files.selectionModel().selectedRows():
+			t=i.row()
+			break
+
+		# don't do it unless there was a file selected
+		if t!="":
+			object_name=self.files[t][0]+self.files[t][1]
+			
+		logic_functions.open_file_dcc(self.config,object_name)
 
 
 	def b_web_clicked(self):
@@ -145,7 +160,7 @@ class ForgeWidget(base_type,ui_type):
 			t=i.row()
 			break
 		if t!="":
-			logic_functions.open_file_web(self.files[t][2])
+			logic_functions.open_file_web(self.config,self.files[t][2])
 			
 			
 		
