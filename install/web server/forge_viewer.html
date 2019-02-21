@@ -1,0 +1,119 @@
+<head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=no" />
+    <meta charset="utf-8">
+
+    <!-- The Viewer CSS -->
+    <link rel="stylesheet" href="https://developer.api.autodesk.com/modelderivative/v2/viewers/style.min.css" type="text/css">
+
+    <!-- Developer CSS -->
+    <style>
+        body {
+            margin: 0;
+        }
+        #MyViewerDiv {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            background-color: #F0F8FF;
+        }
+    </style>
+	<style>
+		.my-custom-ui {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 5;
+        margin: .3em;
+        padding: .3em;
+        font-size: 3em;
+        font-family: sans-serif;
+        background-color: rgba(255, 255, 255, 0.85);
+        border-radius: 8px;
+    }
+    .my-custom-ui span {
+        color: red;
+    }
+</style>
+</head>
+<body>
+
+
+    <!-- The Viewer will be instantiated here -->
+    <div id="MyViewerDiv"></div>
+	<div class="my-custom-ui">
+		<div>Info: <span id="MySelectionValue">empty selection</span></div>
+	<div>
+    <!-- The Viewer JS -->
+    <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/viewer3D.min.js"></script>
+	<script src="http://localhost:81/nh-forge-extension.js"></script>
+	<script src="http://localhost:81/property_inspector.js"></script>
+
+    <!-- Developer JS -->
+    <script>
+        var viewerApp;
+        var options = {
+            env: 'AutodeskProduction',
+            getAccessToken: function(onGetAccessToken) {
+                //
+                // TODO: Replace static access token string below with call to fetch new token from your backend
+                // Both values are provided by Forge's Authentication (OAuth) API.
+                //
+                // Example Forge's Authentication (OAuth) API return value:
+                // {
+                //    "access_token": "eyJhbGciOiJIUzI1NiIsImtpZCI6Imp3dF9zeW1tZXRyaWNfa2V5In0.eyJjbGllbnRfaWQiOiI3TFVMQnJuNzZwMlRjRlNld04xUTZBN1ZMT25NWkpLMyIsImV4cCI6MTU1MDc2NzczOSwic2NvcGUiOlsidmlld2FibGVzOnJlYWQiXSwiYXVkIjoiaHR0cHM6Ly9hdXRvZGVzay5jb20vYXVkL2p3dGV4cDYwIiwianRpIjoiMVgxYjU0c1Z5VWNjSXNDaU1Ka2dxbUNhSDVwQkhaTzNiR29lbVpXeGpYN2FVa1VWS1hab2dYaTNvZzN2UVM2TSJ9.Y1pHalNLyPHC5QEUQTqUZ7rrPWtOyM6QMBLF4gr6oKw",
+                //    "token_type": "Bearer",
+                //    "expires_in": 86400
+                // }
+                //
+                var accessToken = 'eyJhbGciOiJIUzI1NiIsImtpZCI6Imp3dF9zeW1tZXRyaWNfa2V5In0.eyJjbGllbnRfaWQiOiI3TFVMQnJuNzZwMlRjRlNld04xUTZBN1ZMT25NWkpLMyIsImV4cCI6MTU1MDc2NzczOSwic2NvcGUiOlsidmlld2FibGVzOnJlYWQiXSwiYXVkIjoiaHR0cHM6Ly9hdXRvZGVzay5jb20vYXVkL2p3dGV4cDYwIiwianRpIjoiMVgxYjU0c1Z5VWNjSXNDaU1Ka2dxbUNhSDVwQkhaTzNiR29lbVpXeGpYN2FVa1VWS1hab2dYaTNvZzN2UVM2TSJ9.Y1pHalNLyPHC5QEUQTqUZ7rrPWtOyM6QMBLF4gr6oKw';
+                var expireTimeSeconds = 60 * 30;
+                onGetAccessToken(accessToken, expireTimeSeconds);
+            }
+
+        };
+        var documentId = 'urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6bmgyMDE4MTIyNy0xMDQ0MDB0ZXN0YnVja2V0MS8yMDE5MDIxMV8xNDUwMjF0ZXN0MS5tYXg';
+        Autodesk.Viewing.Initializer(options, function onInitialized(){
+            viewerApp = new Autodesk.Viewing.ViewingApplication('MyViewerDiv');
+            viewerApp.registerViewer(viewerApp.k3D, Autodesk.Viewing.Private.GuiViewer3D);
+            viewerApp.loadDocument(documentId, onDocumentLoadSuccess, onDocumentLoadFailure);
+        });
+
+        function onDocumentLoadSuccess(doc) {
+
+            // We could still make use of Document.getSubItemsWithProperties()
+            // However, when using a ViewingApplication, we have access to the **bubble** attribute,
+            // which references the root node of a graph that wraps each object from the Manifest JSON.
+            var viewables = viewerApp.bubble.search({'type':'geometry'});
+            if (viewables.length === 0) {
+                console.error('Document contains no viewables.');
+                return;
+            }
+
+            // Choose any of the avialble viewables
+            viewerApp.selectItem(viewables[0].data, onItemLoadSuccess, onItemLoadFail);
+        }
+
+        function onDocumentLoadFailure(viewerErrorCode) {
+            console.error('onDocumentLoadFailure() - errorCode:' + viewerErrorCode);
+        }
+
+        function onItemLoadSuccess(viewer, item) {
+            console.log('onItemLoadSuccess()!');
+            console.log(viewer);
+            console.log(item);
+
+            // Congratulations! The viewer is now ready to be used.
+            console.log('Viewers are equal: ' + (viewer === viewerApp.getCurrentViewer()));
+        }
+
+        function onItemLoadFail(errorCode) {
+            console.error('onItemLoadFail() - errorCode:' + errorCode);
+        }
+
+		var config3d = {
+			extensions: ['nh-forge Extension']
+			};
+		viewerApp.registerViewer(viewerApp.k3D, Autodesk.Viewing.Private.GuiViewer3D, config3d);
+
+    </script>
+</body>
